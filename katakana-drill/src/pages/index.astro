@@ -1,0 +1,51 @@
+---
+const katakana = [
+  "ア","イ","ウ","エ","オ",
+  "カ","キ","ク","ケ","コ",
+  "サ","シ","ス","セ","ソ",
+  "タ","チ","ツ","テ","ト",
+  "ナ","ニ","ヌ","ネ","ノ",
+  "ハ","ヒ","フ","ヘ","ホ",
+  "マ","ミ","ム","メ","モ",
+  "ヤ","ユ","ヨ",
+  "ラ","リ","ル","レ","ロ",
+  "ワ","ヲ","ン"
+];
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Katakana Drill</title>
+    <link rel="stylesheet" href="/styles/style.css" />
+  </head>
+  <body>
+    <h1>Katakana Drill</h1>
+    <div class="controls">
+      <label for="count">Number of cards:</label>
+      <input id="count" type="number" min="1" max={katakana.length} value="5" />
+      <button id="generate">Generate</button>
+    </div>
+    <div id="cards" class="cards"></div>
+
+    <script type="application/json" id="katakana-data">
+      {JSON.stringify(katakana)}
+    </script>
+    <script type="module" is:client>
+      const dataEl = document.getElementById('katakana-data');
+      const allKatakana = JSON.parse(dataEl.textContent);
+      const cardsContainer = document.getElementById('cards');
+      document.getElementById('generate').addEventListener('click', () => {
+        const count = parseInt(document.getElementById('count').value, 10);
+        const shuffled = [...allKatakana].sort(() => Math.random() - 0.5);
+        cardsContainer.innerHTML = '';
+        shuffled.slice(0, count).forEach(char => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.textContent = char;
+          cardsContainer.appendChild(card);
+        });
+      });
+    </script>
+  </body>
+</html>
